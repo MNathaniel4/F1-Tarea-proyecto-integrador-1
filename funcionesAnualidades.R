@@ -1,11 +1,12 @@
 
 ## Autor: Mr. Mario Nathaniel de la Vega Ramírez
 #  Contenido: Funciones relacionadas a anualidades 
-## Abs: Para aquellas con solucion cerrada unicamente dados los datos usar la 
+## Abs: Para aquellas con solucion cerrada unicamente , dados los datos, usar la 
 # formula
-# En el caso de las tasas se uso un aumento porcentual y en VAAnt incremntos
+# En el caso de las tasas se uso un ciclo while que ayudara a comparar  y en VAAnt incremntos
 
 ##  Funciones sufijo VFVenc
+
 VFVenc = function(tasa,nper,pago)
 {
   return ( pago/tasa *(((1+tasa)**nper)-1) )
@@ -39,6 +40,7 @@ periodoVFVenc=function(tasa,pago,VF)
 }
   
 ## Funciones sufijo VFAnt
+
 VFAnt = function(tasa,nper,pago)
 {
   return (pago/tasa *(((1+tasa)**nper)-1) *(1+tasa))
@@ -73,6 +75,7 @@ periodoVFAnt =function(tasa,pago,VF)
 }  
 
 ## Funciones sufijo VAVenc
+
 VAVenc = function(tasa,nper,pago)
 {
   return ( pago/tasa * (1-((1+tasa)**(-nper))) )
@@ -85,8 +88,8 @@ tasaVAVenc = function(nper,pago,VA)
 {
   x0= .1
  
-   while(  ((VA/pago)* x0 )/((( 1- (x0 + 1)**(-nper)) ) ) - 1 > (0.0000001) )   
-  {
+   while(  ((VA/pago)* x0 )/((( 1- (x0 + 1)**(-nper)) ) ) - 1 > (0.0000001) )## Una forma  equivalente para evitar que se active prematuramente la condicion   
+  {                                                                           # (A veces es menor que cero el lado izquierdo si se hace por diferencia)
 
     if(VA/pago  <  (1 - (x0 + 1)**(-nper) )/x0 )
     {
@@ -105,7 +108,7 @@ periodoVAVenc=function(tasa,pago,VA)
  return( - log(1- (VA*tasa /pago)) / log((1+tasa)) )
 }          
   
-## funciones sufijo VAAnt
+## Funciones sufijo VAAnt
 
 VAAnt = function(tasa,nper,pago)
 {
@@ -116,15 +119,15 @@ pagoVAAnt = function(tasa,nper,VA)
   return ( VA*tasa / ((1-((1+tasa)**(-nper)))*(1+tasa)) )
 }
 
-tasaVAAnt = function(nper,pago,VA)
+tasaVAAnt = function(nper,pago,VA) ## Esta función resulto dificil de programar
 {
   x0 =.001
   xp1 = Inf
   xp2= 0
-  while( (VA - (pago/x0 * (1-((1+x0)**(-nper))) * (1+x0))  )**2 - .000001 > .000001 )   
+  while( (VA - (pago/x0 * (1-((1+x0)**(-nper))) * (1+x0))  )**2 - .000000000001 > .000000000001 ) 
+    ## Por algún motivo la condicion del while nunca se vuelve falasa
   { 
-    ##print( paste(VA ,  pago/x0 * (1-((1+x0)**(-nper))) * (1+x0)) )
-    ##print( paste(xp1 ,  xp2 ))
+   ## Opte mejor que detuviera el ciclo cuando oscilara entre 2 valores (uno de ida y uno de regreso) 
     if(xp1 == xp2)
     {break}
     
