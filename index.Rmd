@@ -1,0 +1,208 @@
+---
+title: "F1"
+author: "Mr. Mario Nathaniel de la Vega Ramírez"
+date: "2023-12-03"
+output: html_document
+---
+<style type="text/css">
+  body{
+       font-family:Corbel Light;
+       font-size: 14pt;
+      }
+    </style>
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source ("https://raw.githubusercontent.com/MNathaniel4/F1-Tarea-proyecto-integrador-1/main/funcionesAnualidades.R")
+```
+
+NOTA: Las funciones utilizadas estan [aquí.](https://github.com/MNathaniel4/F1-Tarea-proyecto-integrador-1/blob/main/funcionesAnualidades.R)
+
+
+# **Problema 1** para **valores futuros**: 
+
+Una persona desea ahorrar *$500.00* cada *fin de quincena* durante *40 años*. Si el fondo de inversión paga una *tasa de rendimiento de 7.5%* ¿Cuánto dinero tendrá ahorrado al final de su proyecto financiero?
+
+## En caso de anualidades vencidas:
+```{r AnualidadesVencidasVF}
+## Dado que los depositos son quincenales hay que cambiar nuestros datos a quincenas
+tasa= 0.075/24 ## suponiendo una tasa anual por convencion, cada año tiene 24 quincenas
+nper= 960      ## 40 periodos de 24 quincenas son en total 960
+pago= 500
+
+paste0("$",formatC(VFVenc(tasa,nper, pago),format = "f",big.mark = ","), " para la respuesta del problema. A continuacion se comprobra el resulado usado las funciones sufijo 'VFVenc'")
+
+#Almacene el valor optenido para hacer la comprobación:
+VFV = VFVenc(tasa,nper, pago) 
+##
+```
+**Periodos**
+¿Durante *cuántos años* debera una persona ahorrar *$500.00* cada *fin de quincena*,si quiere tener un ahorro de $3,038,688.1705,dado que el el fondo de inversión paga una *tasa de rendimiento de 7.5%*?
+
+```{r AnualidadesVencidasperiodoVF}
+paste0("Para los periodos se especifico un valor de: ", nper,"; Usando nuesra funcion se consiguen: ", periodoVFVenc(tasa,pago, VFV), " periodos")
+##
+paste0("Estos periodos son quincenales; ",periodoVFVenc(tasa,pago, VFV) ," quincenas equivalen a ",periodoVFVenc(tasa,pago, VFV)/24," años , que es el dato que nos dieron en el problema inicial")
+
+```
+
+**Pagos**
+Si se desea tener al final de un proyecto financiero de *40 años* de ahorro una cantidad de *$3,038,688.1705*,depositando cada *fin de quincena* en un fondo de inversión que paga una *tasa de rendimiento de 7.5%*,¿De cúanto tendran que ser los depositos ?
+
+```{r AnualidadesVencidaspagoVF}
+
+paste0("Para los pagos se especifico un valor de: $", formatC(pago,format = "f") ,"; Usando nuesra funcion se consigue: $", pagoVFVenc(tasa,nper, VFV),".00 pesos, que coincide con el valor dado en el problema inicial")
+##
+```
+**Tasa**
+¿De *cuánto porciento* tendra que ser una tasa anual dada por un fondo de ahorro si se quiere llegar a *$3,038,688.1705*, mediante pagos *quincenales de $500.00* durante *40 años*?
+
+```{r AnualidadesVencidastasaVF}
+paste0("La tasa quincenal es de ", tasa ," en tanto por uno; Usando nuesra funcion se consigue una tasa quincenal del ", round(tasaVFVenc(nper,pago,VFV),7)," en tanto por uno (redondeado a 7 cifras), que se trata de tasa anual de: ", round(tasaVFVenc(nper,pago,VFV),7)*24,", que es una tasa del ",  round(tasaVFVenc(nper,pago,VFV),7) *24*100," %" )
+
+```
+## Para el caso de anualidades anticipadas:
+
+
+*Una persona desea ahorrar *$500.00* cada *inico de quincena* durante *40 años*. Si el fondo de inversión paga una *tasa de rendimiento de 7.5%* ¿Cuánto dinero tendrá ahorrado al final de su proyecto financiero?
+
+```{r AnualidadesAnticipadasVF}
+## Los datos se conservan igual que el problema anterior
+tasa= 0.075/24
+nper= 960
+pago= 500
+
+paste0("$",formatC(VFAnt(tasa,nper, pago),format = "f",big.mark = ","), " para la respuesta del problema. A continuacion se comprobra el resulado usado las funciones sufijo 'VFAnt'")
+
+#Almacene el valor optenido para confirmar
+VFA = VFAnt(tasa,nper, pago) 
+##
+```
+**Periodos**
+¿Durante *cuántos años* se deberan depositar *$500.00* en un fondo de ahorro que paga una *tasa del 7.5%* cada *inicio de quincena* si se desea *tener al final* un *saldo de $3,048,184.0711*?
+
+```{r AnualidadesAnticipadasperiodoVF}
+paste0("Para los periodos se especifico un valor de: ", nper," quincenas; Usando nuestra función se consiguen ", periodoVFAnt(tasa,pago,VFA)," quincenas, que son ", periodoVFAnt(tasa,pago,VFA)/24, " años")
+##
+```
+**Pagos**
+Durante *40 años* se deposito a inicio de cada quincena en un fondo de ahorro que paga una *tasa del 7.5%*, *Al final* del proyecto habia un *saldo de $3,048,184.0711*,¿De cuánto fueron los depositos?
+
+```{r AnualidadesAnticipadaspagoVF}
+paste0("Para los pagos se especifico un valor de: $", formatC(pago,format = "f") ,"; Usando nuesra funcion se consigue: $", pagoVFAnt(tasa,nper, VFA))
+##
+```
+
+**Tasa**
+¿Qué *tasa anualizada de rendimientos* pago un fondo de ahorro , si durante *40 años* se deposito a inicio de cada quincena *$500.00*,y *al final* del proyecto habia un *saldo de $3,048,184.0711*?
+
+```{r AnualidadesAnticipadastasaVF}
+paste0("Para la tasa, adaptada al problema es de ", tasa ,"; Usando nuesra funcion se consigue: ", round(tasaVFAnt(nper,pago,VFA),7)," redondeado a 7 cifras, todo esto en un contexto quincenal y tanto por uno, anualizada seria del ",round(tasaVFAnt(nper,pago,VFA),7)*24," que seria ", round(tasaVFAnt(nper,pago,VFA),7)*24*100,"%" )
+```
+
+
+# **Problema 2** para **valores actuales**: 
+Una persona paga *cada quincena $450.00* durante *2 años*. Si la tienda departamental le cobra de *11% de interés* ¿Cuánto le prestaron?
+
+## En el caso de anualidades vencidas:
+```{r AualidadesVencidasVA}
+## Pasando los datos a un contexto de quincenas
+tasa= 0.11/24 #tasa quincenal
+nper= 48 #2 periodos de 24 quincenas(un año)
+pago= 450
+
+paste0("$",formatC(VAVenc(tasa,nper, pago),format = "f",big.mark = ","), " para la respuesta del problema. A continuacion se comprobra el resulado usado las funciones sufijo 'VAVenc'")
+
+#Almacene el valor optenido para usarlo para comprobar
+VAV = VAVenc(tasa,nper, pago) 
+##
+```
+**Periodos**
+Una persona recibió un prestamo de *$19,349.4498*, y *cada quincena  pagaba $450.00* para amortizar la deuda . Si la tienda departamental le cobro *11% de interés* ¿Durante cuántos años abono?
+
+```{r AualidadesVencidasperiodoVA}
+paste0("Para los periodos quincenales se especifico un valor de ", nper,"; Usando nuestra funcion se consiguen ", periodoVAVenc(tasa,pago, VAV)," quincenas, o sea, ",periodoVAVenc(tasa,pago, VAV)/24, " años, ☑")
+##
+```
+
+**Pago** Una persona recibió un prestamo de *$19,349.4498*, y  abono *cada quincena* para amortizar la deuda  durante *2 años*. Si la tienda departamental le cobro *11% de interés* ¿De cuánto dinero fueron los abonos?
+
+```{r AualidadesVencidaspagoVA}
+paste0("Para los pagos se especifico un valor de $", formatC(pago,format = "f") ,"; Usando nuesra funcion se consigue $", pagoVAVenc(tasa,nper, VAV)," ✔✔✔")
+##
+```
+**Tasa**
+Si una persona abono *$450.00 cada quincena* para saldar una deuda de *$19,349.4498*  durante *2 años*.¿Cuál fue la tasa anual que se le cobro?
+
+```{r AualidadesVencidastasaVA}
+paste0("Para la tasa, adaptada al problema es de ", tasa ,"; Usando nuesra funcion se consigue",round(tasaVAVenc(nper,pago,VAV), 7)," (redondeado a 7 cifras). ",round(tasaVAVenc(nper,pago,VAV), 7)*24, " es la tasa anualizada, redondenado a 2 cifras sera del ", round(round(tasaVAVenc(nper,pago,VAV), 7)*24*100,2),"~ en tanto, porciento, ≈" )
+```
+
+## En caso de anualidades anticipadas:
+
+Una persona paga *cada inicio de quincena $450.00* durante *2 años*. Si la tienda departamental le cobra de *11% de interés* ¿Cuánto le prestaron?
+
+```{r AualidadesAnticipadasVA}
+
+## Todo se hereda del anterior problema, exepto la solución.
+tasa= 0.11/24
+nper= 48
+pago= 450
+
+paste0("$",formatC(VAVenc(tasa,nper, pago),format = "f",big.mark = ","), " . A continuacion se comprobra el resulado usado las funciones sufijo 'VAAnt'")
+
+#Almacene el valor optenido para confirmar
+VAA = VAAnt(tasa,nper, pago) 
+##
+```
+**Periodos**
+Una persona paga *cada inicio de quincena $450* para saldar una deuda de *$19,349.4498*. Si la tienda departamental le cobra de *11% de interés* ¿Durante cuántos años pagará?
+```{r AualidadesAnticipadasperiodoVA}
+paste0("Para los periodos se especifico un valor de ", nper,"; Usando nuesra funcion se consiguen ", periodoVAAnt(tasa,pago, VAA)," quincenas, traducido a años serian ", periodoVAAnt(tasa,pago, VAA)/24)
+##
+```
+**Pagos**
+Una persona paga *cada inicio de quincena* para saldar una deuda de *$19,349.4498*, y así lo hara durante *2 años*. Si la tienda departamental le cobra de *11% de interés*¿De cuánto serán los pagos?
+```{r AualidadesAnticipadaspagoVA}
+paste0("Para los pagos se dio un valor de $", formatC(pago,format = "f") ,"; Nuesra funcion nos arroja un valor de $", pagoVAAnt(tasa,nper, VAA),".00")
+##
+```
+**Tasa**
+Una persona pagara *$450.00 cada inicio de quincena* para saldar una deuda de *$19,349.4498*, y así lo hara durante *2 años*.¿De cuánto serán la tasa a pagar para que esto ocurra en dicho plazo?
+```{r AualidadesAnticipadastasaVA}
+
+paste0("Para la tasa, en un contexto quincenal es de ", tasa ,"; Usando nuesra funcion se consigue ", round(tasaVAAnt(nper,pago,VAA), 7), " (redondeado a 7 cifras), ", round(tasaVAAnt(nper,pago,VAA), 7)*24," anualizada; redondeando a 2 cifras y expresado en base 100 sería ",  round(round(tasaVAAnt(nper,pago,VAA), 7)*24*100, 2),"%"  )
+```
+
+
+
+# **Problema 3** (solo para anualidades diferidas) 
+
+Del problema anterior: ¿Cuánto le prestaron si comienza a pagar *3 meses después de adquirido el financiamiento*?
+
+```{r Anualidadesdieridas}
+## Lo unico que hay que hacer es sacarle valor presente compuesto al valor actual optenido
+ # usando los mismos datos, solo que ahora el periodo, denominado en las notas como de gracia, será el dato de periodos diferidos
+
+##El contexto del problema 2 s ve heredado
+tasa= 0.11/24
+nper= 48
+pago= 450
+
+##Cambiando 3 meses a quincenas:
+
+difper = 6
+
+
+paste0("$",formatC(VADif(tasa,nper, pago, difper),format = "f",big.mark = ","), " para la respuesta del problema. A continuacion se comprobra el resulado usado la funcion 'pagoVADif'")
+
+#Almacene el valor optenido:
+VAD = VADif(tasa,nper, pago, difper)
+```
+
+¿De *cuanto serán los pagos quincenales* de un financiamiento de *$18,825.7726* que empezo a amortizarse *3 meses después* 
+de su trata, si se pacto a una tasa del 11% a un lapso de 2 años?
+```{r AnualidadesDiferidasPago}
+##
+paste0("$", formatC(pago,format = "f") ," es el dato dado; Usando nuesra funcion se consigue: $", pagoVADif(tasa,nper,difper ,VAD),".00")
+
+```
